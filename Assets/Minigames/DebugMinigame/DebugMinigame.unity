@@ -535,7 +535,7 @@ MonoBehaviour:
   - {fileID: 9200981544211229969, guid: c2da6ced9ef3fa14fadb624d31843328, type: 3}
   - {fileID: 5433296561178617085, guid: bec3f058b0b91994fa9fa3d08c854a93, type: 3}
   specialSprite: {fileID: 4910402132303134282, guid: 3ad4f6554a44fbd46a344563f8c93b9d, type: 3}
-  winSFXController: {fileID: 0}
+  winSFXController: {fileID: 1531167197}
   screenMargin: 1
   totalCount: 10
   scoreThreshold: 2
@@ -578,7 +578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1283289958
 Transform:
   m_ObjectHideFlags: 0
