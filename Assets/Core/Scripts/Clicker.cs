@@ -13,7 +13,6 @@ public class Clicker : MonoBehaviour
 
     void Update()
     {
-        // Use simple mouse detection instead of Input System
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             HandleClick();
@@ -22,33 +21,24 @@ public class Clicker : MonoBehaviour
 
     void HandleClick()
     {
-        // Get mouse position and convert to world coordinates
+        // get mouse position and convert to world coordinates
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
         worldPos.z = 0f; // Ensure Z is 0 for 2D
 
-        // Try detection methods with smaller, more precise areas
+        // try detection methods with smaller, more precise areas
         Collider2D hitCollider = null;
         
-        // Method 1: Direct point overlap
+        // direct point overlap
         hitCollider = Physics2D.OverlapPoint(worldPos);
         
-        // Method 2: If no hit, try a very small circle (just for minor inaccuracies)
+        // if no hit, try a very small circle (just for minor inaccuracies)
         if (hitCollider == null)
         {
             hitCollider = Physics2D.OverlapCircle(worldPos, .3f);
-            if (hitCollider != null)
-            {
-                Debug.Log("Found collider using small circle detection (radius 0.1)");
-            }
-        }
-        
-        if (hitCollider == null) 
-        {
-            Debug.Log("No collider hit - click more precisely on the sprite");
-            return;
         }
 
+        if (hitCollider == null) return;
         Debug.Log("Hit collider: " + hitCollider.gameObject.name);
 
         if (!MinigameManager.IsReady()) 
@@ -61,8 +51,14 @@ public class Clicker : MonoBehaviour
         
         if (hitCollider.gameObject.name == targetName || hitCollider.gameObject.name == luigi.name)
         {
-            MinigameManager.SetStateToSuccess();
-            MinigameManager.EndGame();
+            // MinigameManager.SetStateToSuccess();
+            // MinigameManager.EndGame();
+
+            SpriteSpawner_NA spawner = Object.FindFirstObjectByType<SpriteSpawner_NA>();
+            if (spawner != null)
+            {
+                spawner.OnLuigiFound(hitCollider.gameObject);
+            }
         }
     }
 }

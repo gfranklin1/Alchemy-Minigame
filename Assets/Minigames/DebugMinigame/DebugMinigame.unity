@@ -568,12 +568,13 @@ MonoBehaviour:
   - {fileID: 5433296561178617085, guid: bec3f058b0b91994fa9fa3d08c854a93, type: 3}
   specialSprite: {fileID: 4910402132303134282, guid: 3ad4f6554a44fbd46a344563f8c93b9d, type: 3}
   screenMargin: 1
-  totalCount: 200
+  totalCount: 20
   scaleToMatchCollider: 1
   enableLayerSwapping: 1
   swapInterval: 2
   minSortingOrder: -10
   maxSortingOrder: 10
+  luigiDeleteDelay: 1
 --- !u!4 &1232957497
 Transform:
   m_ObjectHideFlags: 0

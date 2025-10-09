@@ -40,23 +40,18 @@ public class SpriteMovement_NA : MonoBehaviour
        
        Vector3 spritePos = transform.position;
        Vector3 bottomLeft = cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane));
-       Vector3 topRight = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, cam.nearClipPlane));
-       
-       bool bounced = false;
-       
+       Vector3 topRight = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, cam.nearClipPlane));       
        // Check left boundary
        if (spritePos.x < bottomLeft.x)
        {
            direction.x = Mathf.Abs(direction.x); // Force positive X direction
            transform.position = new Vector3(bottomLeft.x, spritePos.y, spritePos.z);
-           bounced = true;
        }
        // Check right boundary
        else if (spritePos.x > topRight.x)
        {
            direction.x = -Mathf.Abs(direction.x); // Force negative X direction
            transform.position = new Vector3(topRight.x, spritePos.y, spritePos.z);
-           bounced = true;
        }
        
        // Check bottom boundary
@@ -64,20 +59,13 @@ public class SpriteMovement_NA : MonoBehaviour
        {
            direction.y = Mathf.Abs(direction.y); // Force positive Y direction
            transform.position = new Vector3(spritePos.x, bottomLeft.y, spritePos.z);
-           bounced = true;
        }
        // Check top boundary
        else if (spritePos.y > topRight.y)
        {
            direction.y = -Mathf.Abs(direction.y); // Force negative Y direction
            transform.position = new Vector3(spritePos.x, topRight.y, spritePos.z);
-           bounced = true;
        }
-       
-    //    if (bounced)
-    //    {
-    //        Debug.Log($"Sprite {gameObject.name} bounced off screen boundary, new direction: {direction}");
-    //    }
    }
 
 
@@ -110,7 +98,6 @@ public class SpriteMovement_NA : MonoBehaviour
             if (normal != Vector2.zero)
             {
                 direction = Vector2.Reflect(direction, normal).normalized;
-                //Debug.Log($"Sprite {gameObject.name} bounced off screen edge, new direction: {direction}");
             }
         }
     }
