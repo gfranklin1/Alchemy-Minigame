@@ -49,6 +49,17 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "",
+                    "id": "6cd7f555-380c-41c9-be0e-8416504ef149",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "ArrowKeys",
                     "id": "03f6aadf-bfde-4609-8489-b1e0671477f9",
                     "path": "2DVector",

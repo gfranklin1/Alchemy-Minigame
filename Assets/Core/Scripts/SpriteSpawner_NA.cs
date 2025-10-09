@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpriteSpawner_NA : MonoBehaviour
+public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
 {
     [Header("Distraction Sprites")]
     [SerializeField] [Tooltip("Array of regular distraction sprites that will be spawned multiple times")]
@@ -40,10 +40,21 @@ public class SpriteSpawner_NA : MonoBehaviour
     private SpriteRenderer[] allSpriteRenderers;
     private float nextSwapTime;
 
+    public void OnMinigameStart()
+    {
+        SpawnObjectsAtRandom();
+    }
+
+    public void OnTimerEnd()
+    {
+        MinigameManager.EndGame();
+    }
+
     void Start()
     {
+        MinigameManager.Subscribe(this);
+
         CalculateScreenBounds();
-        SpawnObjectsAtRandom();
         
         if (enableLayerSwapping)
         {
@@ -65,7 +76,7 @@ public class SpriteSpawner_NA : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null)
         {
-            Debug.LogError("SpriteSpawner_NA: No main camera found!");
+            //Debug.LogError("SpriteSpawner_NA: No main camera found!");
             return;
         }
         
@@ -85,13 +96,13 @@ public class SpriteSpawner_NA : MonoBehaviour
         // check for real inputs
         if (distractionSprites.Length != 5)
         {
-            Debug.LogError("SpriteSpawner_NA: Distraction sprites array must contain exactly 5 sprites!");
+            //Debug.LogError("SpriteSpawner_NA: Distraction sprites array must contain exactly 5 sprites!");
             return;
         }
         
         if (specialSprite == null)
         {
-            Debug.LogError("SpriteSpawner_NA: Special sprite is not assigned!");
+            //Debug.LogError("SpriteSpawner_NA: Special sprite is not assigned!");
             return;
         }
         
@@ -100,7 +111,7 @@ public class SpriteSpawner_NA : MonoBehaviour
         {
             if (distractionSprites[i] == null)
             {
-                Debug.LogError($"SpriteSpawner_NA: Regular sprite at index {i} is null!");
+                //Debug.LogError($"SpriteSpawner_NA: Regular sprite at index {i} is null!");
                 return;
             }
         }
@@ -171,13 +182,13 @@ public class SpriteSpawner_NA : MonoBehaviour
         
         if (spriteRenderer == null)
         {
-            Debug.LogWarning($"No SpriteRenderer found on {spriteObject.name}. Cannot scale sprite.");
+            //Debug.LogWarning($"No SpriteRenderer found on {spriteObject.name}. Cannot scale sprite.");
             return;
         }
         
         if (boxCollider == null)
         {
-            Debug.LogWarning($"No BoxCollider2D found on {spriteObject.name}. Cannot scale to collider.");
+            //Debug.LogWarning($"No BoxCollider2D found on {spriteObject.name}. Cannot scale to collider.");
             return;
         }
         
@@ -188,7 +199,7 @@ public class SpriteSpawner_NA : MonoBehaviour
         // change the sprites local scale
         spriteObject.transform.localScale = scaleFactor;
         
-        Debug.Log($"Scaled {spriteObject.name}: Sprite size {spriteSize} -> Collider size {colliderSize}, Scale factor: {scaleFactor}");
+        //Debug.Log($"Scaled {spriteObject.name}: Sprite size {spriteSize} -> Collider size {colliderSize}, Scale factor: {scaleFactor}");
     }
     
     private void InitializeLayerSwapping()
@@ -197,7 +208,7 @@ public class SpriteSpawner_NA : MonoBehaviour
         allSpriteRenderers = FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None);
         nextSwapTime = Time.time + swapInterval;
         
-        Debug.Log($"Initialized layer swapping for {allSpriteRenderers.Length} sprites");
+        //Debug.Log($"Initialized layer swapping for {allSpriteRenderers.Length} sprites");
     }
     
     private void SetRandomSortingOrder(GameObject spriteObject)
@@ -225,6 +236,8 @@ public class SpriteSpawner_NA : MonoBehaviour
             }
         }
         
-        Debug.Log($"Swapped layers for {allSpriteRenderers.Length} sprites");
+        //Debug.Log($"Swapped layers for {allSpriteRenderers.Length} sprites");
     }
+
+    
 }

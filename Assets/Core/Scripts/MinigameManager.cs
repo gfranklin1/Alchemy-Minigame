@@ -49,6 +49,7 @@ public class MinigameManager : MonoBehaviour
         }
 
         // Start game
+        GameObject.Find("CountdownScreen").SetActive(false);
         Time.timeScale = 1f;
         mstate = MinigameState.PLAYING;
         CoreUI.CountdownText.gameObject.SetActive(false);

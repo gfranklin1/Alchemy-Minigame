@@ -15,14 +15,14 @@ public class SpriteMovement_NA : MonoBehaviour
        
        rb = GetComponent<Rigidbody2D>();
        
-       Debug.Log($"Sprite {gameObject.name} starting with direction: {direction}");
+    //    Debug.Log($"Sprite {gameObject.name} starting with direction: {direction}");
    }
    void FixedUpdate()
    {
        // ensure direction is normalized and not zero
        if (direction.magnitude < 0.1f)
        {
-           Debug.LogWarning($"Sprite {gameObject.name} had invalid direction, resetting to random direction");
+        //    Debug.LogWarning($"Sprite {gameObject.name} had invalid direction, resetting to random direction");
            float randomAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
            direction = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle)).normalized;
        }
@@ -74,10 +74,10 @@ public class SpriteMovement_NA : MonoBehaviour
            bounced = true;
        }
        
-       if (bounced)
-       {
-           Debug.Log($"Sprite {gameObject.name} bounced off screen boundary, new direction: {direction}");
-       }
+    //    if (bounced)
+    //    {
+    //        Debug.Log($"Sprite {gameObject.name} bounced off screen boundary, new direction: {direction}");
+    //    }
    }
 
 
@@ -110,7 +110,7 @@ public class SpriteMovement_NA : MonoBehaviour
             if (normal != Vector2.zero)
             {
                 direction = Vector2.Reflect(direction, normal).normalized;
-                Debug.Log($"Sprite {gameObject.name} bounced off screen edge, new direction: {direction}");
+                //Debug.Log($"Sprite {gameObject.name} bounced off screen edge, new direction: {direction}");
             }
         }
     }
