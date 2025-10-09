@@ -105,7 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbb2d9c858ead8c4687c2385e8c8d7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteMovement_NA
-  force: 3
+  minSpeed: 3
+  maxSpeed: 7
 --- !u!50 &-2844833489846083217
 Rigidbody2D:
   serializedVersion: 5

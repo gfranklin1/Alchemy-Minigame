@@ -3,104 +3,111 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class SpriteMovement_NA : MonoBehaviour
 {
-   Rigidbody2D rb;
-   Vector2 direction;
-   public float force = 10f;
+    [Header("Movement Settings")]
+    [SerializeField] 
+    [Tooltip("Minimum movement speed/speed")]
+    private float minSpeed = 5f;
+    
+    [SerializeField] 
+    [Tooltip("Maximum movement speed/speed")]
+    private float maxSpeed = 15f;
+    
+    private Rigidbody2D rb;
+    private Vector2 direction;
+    private float speed; 
+    
+    // screen boundaries
+    private Camera cam;
+    private Vector2 bottomLeft;
+    private Vector2 topRight;
 
-   void Start()
-   {
-       // random direction for each sprite
-       float randomAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-       direction = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle)).normalized;
-       
-       rb = GetComponent<Rigidbody2D>();
-       
-    //    Debug.Log($"Sprite {gameObject.name} starting with direction: {direction}");
-   }
-   void FixedUpdate()
-   {
-       // ensure direction is normalized and not zero
-       if (direction.magnitude < 0.1f)
-       {
-        //    Debug.LogWarning($"Sprite {gameObject.name} had invalid direction, resetting to random direction");
-           float randomAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-           direction = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle)).normalized;
-       }
-       
-       // Check screen boundaries every frame and bounce if needed
-       CheckScreenBoundaries();
-       
-       rb.linearVelocity = direction * force;
-   }
-   
-   void CheckScreenBoundaries()
-   {
-       Camera cam = Camera.main;
-       if (cam == null) return;
-       
-       Vector3 spritePos = transform.position;
-       Vector3 bottomLeft = cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane));
-       Vector3 topRight = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, cam.nearClipPlane));       
-       // Check left boundary
-       if (spritePos.x < bottomLeft.x)
-       {
-           direction.x = Mathf.Abs(direction.x); // Force positive X direction
-           transform.position = new Vector3(bottomLeft.x, spritePos.y, spritePos.z);
-       }
-       // Check right boundary
-       else if (spritePos.x > topRight.x)
-       {
-           direction.x = -Mathf.Abs(direction.x); // Force negative X direction
-           transform.position = new Vector3(topRight.x, spritePos.y, spritePos.z);
-       }
-       
-       // Check bottom boundary
-       if (spritePos.y < bottomLeft.y)
-       {
-           direction.y = Mathf.Abs(direction.y); // Force positive Y direction
-           transform.position = new Vector3(spritePos.x, bottomLeft.y, spritePos.z);
-       }
-       // Check top boundary
-       else if (spritePos.y > topRight.y)
-       {
-           direction.y = -Mathf.Abs(direction.y); // Force negative Y direction
-           transform.position = new Vector3(spritePos.x, topRight.y, spritePos.z);
-       }
-   }
-
-
-    void OnTriggerEnter2D(Collider2D other)
+    void Start()
     {
-        if (other.gameObject.CompareTag("ScreenBoundary_NA"))
+        rb = GetComponent<Rigidbody2D>();
+        cam = Camera.main;
+        
+        // assign random speed to this sprite
+        speed = Random.Range(minSpeed, maxSpeed);
+        
+        // assign random direction
+        float randomAngle = Random.Range(0f, 360f);
+        direction = new Vector2(Mathf.Cos(randomAngle * Mathf.Deg2Rad), Mathf.Sin(randomAngle * Mathf.Deg2Rad)).normalized;
+        
+        CalculateScreenBounds();
+    }
+
+    void FixedUpdate()
+    {
+        // check for invalid direction
+        if (direction.magnitude < 0.1f)
         {
-            // calculate bounce direction based on screen edge
-            Vector3 spritePos = transform.position;
-            
-            // determine which edge we hit by comparing positions
-            Vector2 normal = Vector2.zero;
-            
-            // get screen bounds for comparison
-            Camera cam = Camera.main;
-            Vector3 bottomLeft = cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane));
-            Vector3 topRight = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, cam.nearClipPlane));
-            
-            // find the hit edge
-            if (spritePos.x <= bottomLeft.x + 0.1f) // left edge
-                normal = Vector2.right;
-            else if (spritePos.x >= topRight.x - 0.1f) // right edge
-                normal = Vector2.left;
-            else if (spritePos.y <= bottomLeft.y + 0.1f) // bottom edge
-                normal = Vector2.up;
-            else if (spritePos.y >= topRight.y - 0.1f) // top edge
-                normal = Vector2.down;
-            
-            // reflect direction
-            if (normal != Vector2.zero)
-            {
-                direction = Vector2.Reflect(direction, normal).normalized;
-            }
+            float randomAngle = Random.Range(0f, 360f);
+            direction = new Vector2(Mathf.Cos(randomAngle * Mathf.Deg2Rad), Mathf.Sin(randomAngle * Mathf.Deg2Rad)).normalized;
+        }
+
+        // set velocity directly based on speed
+        rb.linearVelocity = direction * speed;
+        
+        CheckScreenBoundaries();
+    }
+
+    void CheckScreenBoundaries()
+    {
+        if (cam == null) return;
+
+        Vector3 spritePos = transform.position;
+        bool bounced = false;
+
+        // check horizontal boundaries
+        if (spritePos.x < bottomLeft.x)
+        {
+            direction.x = Mathf.Abs(direction.x); // positive X direction
+            transform.position = new Vector3(bottomLeft.x, spritePos.y, spritePos.z);
+            bounced = true;
+        }
+        else if (spritePos.x > topRight.x)
+        {
+            direction.x = -Mathf.Abs(direction.x); // negative X direction
+            transform.position = new Vector3(topRight.x, spritePos.y, spritePos.z);
+            bounced = true;
+        }
+
+        // check vertical boundaries
+        if (spritePos.y < bottomLeft.y)
+        {
+            direction.y = Mathf.Abs(direction.y); // positive Y direction
+            transform.position = new Vector3(spritePos.x, bottomLeft.y, spritePos.z);
+            bounced = true;
+        }
+        else if (spritePos.y > topRight.y)
+        {
+            direction.y = -Mathf.Abs(direction.y); // negative Y direction
+            transform.position = new Vector3(spritePos.x, topRight.y, spritePos.z);
+            bounced = true;
+        }
+
+        if (bounced)
+        {
+            rb.linearVelocity = Vector2.zero;
         }
     }
+
+    private void CalculateScreenBounds()
+    {
+        if (cam == null) return;
+
+        bottomLeft = cam.ScreenToWorldPoint(Vector2.zero);
+        topRight = cam.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+    }
+
+    public float GetMovementSpeed()
+    {
+        return speed;
+    }
+
+    public void SetMovementSpeed(float newSpeed)
+    {
+        speed = Mathf.Clamp(newSpeed, 0f, 50f); // Reasonable limits
+        Debug.Log($"{gameObject.name} speed changed to: {speed:F1}");
+    }
 }
-
-
