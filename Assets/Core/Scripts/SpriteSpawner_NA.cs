@@ -98,7 +98,7 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
 
     private IEnumerator EndGame()
     {
-        Debug.Log("Final Score: " + score);
+        // Debug.Log("Final Score: " + score);
 
         DeleteAllSprites();
 
@@ -389,7 +389,7 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
             }
         }
 
-        Debug.Log($"Deleted {deletedCount} sprites");
+        // Debug.Log($"Deleted {deletedCount} sprites");
     }
 
     private void InitializeLayerSwapping()

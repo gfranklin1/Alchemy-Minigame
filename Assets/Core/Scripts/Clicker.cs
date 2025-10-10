@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class Clicker : MonoBehaviour
 {
     [SerializeField] GameObject luigi;
+    [SerializeField] float ClickRadius = 0.4f;
     private Camera mainCamera;
 
     void Start()
@@ -35,11 +36,11 @@ public class Clicker : MonoBehaviour
         // if no hit, try a very small circle (just for minor inaccuracies)
         if (hitCollider == null)
         {
-            hitCollider = Physics2D.OverlapCircle(worldPos, .3f);
+            hitCollider = Physics2D.OverlapCircle(worldPos, ClickRadius);
         }
 
         if (hitCollider == null) return;
-        Debug.Log("Hit collider: " + hitCollider.gameObject.name);
+        // Debug.Log("Hit collider: " + hitCollider.gameObject.name);
 
         if (!MinigameManager.IsReady()) 
         {

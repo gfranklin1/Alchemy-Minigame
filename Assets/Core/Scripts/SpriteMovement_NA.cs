@@ -21,6 +21,8 @@ public class SpriteMovement_NA : MonoBehaviour
     private Vector2 bottomLeft;
     private Vector2 topRight;
 
+    private Vector2 spriteHalfSize;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -32,8 +34,9 @@ public class SpriteMovement_NA : MonoBehaviour
         // assign random direction
         float randomAngle = Random.Range(0f, 360f);
         direction = new Vector2(Mathf.Cos(randomAngle * Mathf.Deg2Rad), Mathf.Sin(randomAngle * Mathf.Deg2Rad)).normalized;
-        
+
         CalculateScreenBounds();
+        CalculateSpriteSize();
     }
 
     void FixedUpdate()
@@ -59,30 +62,30 @@ public class SpriteMovement_NA : MonoBehaviour
         bool bounced = false;
 
         // check horizontal boundaries
-        if (spritePos.x < bottomLeft.x)
+        if (spritePos.x - spriteHalfSize.x < bottomLeft.x)
         {
             direction.x = Mathf.Abs(direction.x); // positive X direction
-            transform.position = new Vector3(bottomLeft.x, spritePos.y, spritePos.z);
+            transform.position = new Vector3(bottomLeft.x + spriteHalfSize.x, spritePos.y, spritePos.z);
             bounced = true;
         }
-        else if (spritePos.x > topRight.x)
+        else if (spritePos.x + spriteHalfSize.x > topRight.x)
         {
             direction.x = -Mathf.Abs(direction.x); // negative X direction
-            transform.position = new Vector3(topRight.x, spritePos.y, spritePos.z);
+            transform.position = new Vector3(topRight.x - spriteHalfSize.x, spritePos.y, spritePos.z);
             bounced = true;
         }
 
         // check vertical boundaries
-        if (spritePos.y < bottomLeft.y)
+        if (spritePos.y - spriteHalfSize.y < bottomLeft.y)
         {
             direction.y = Mathf.Abs(direction.y); // positive Y direction
-            transform.position = new Vector3(spritePos.x, bottomLeft.y, spritePos.z);
+            transform.position = new Vector3(spritePos.x, bottomLeft.y + spriteHalfSize.y, spritePos.z);
             bounced = true;
         }
-        else if (spritePos.y > topRight.y)
+        else if (spritePos.y + spriteHalfSize.y > topRight.y)
         {
             direction.y = -Mathf.Abs(direction.y); // negative Y direction
-            transform.position = new Vector3(spritePos.x, topRight.y, spritePos.z);
+            transform.position = new Vector3(spritePos.x, topRight.y - spriteHalfSize.y, spritePos.z);
             bounced = true;
         }
 
@@ -100,6 +103,29 @@ public class SpriteMovement_NA : MonoBehaviour
         topRight = cam.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
     }
 
+    private void CalculateSpriteSize()
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            // get the actual rendered size of the sprite (accounts for scaling)
+            Bounds spriteBounds = spriteRenderer.bounds;
+            spriteHalfSize = new Vector2(spriteBounds.size.x / 2f, spriteBounds.size.y / 2f);
+            
+            // Debug.Log($"{gameObject.name} sprite half-size calculated: {spriteHalfSize}");
+        }
+        else
+        {
+            // fallback if no sprite renderer
+            spriteHalfSize = new Vector2(0.5f, 0.5f);
+        }
+    }
+
+    public void RecalculateSpriteSize()
+    {
+        CalculateSpriteSize();
+    }
+
     public float GetMovementSpeed()
     {
         return speed;
@@ -108,6 +134,6 @@ public class SpriteMovement_NA : MonoBehaviour
     public void SetMovementSpeed(float newSpeed)
     {
         speed = Mathf.Clamp(newSpeed, 0f, 50f); // Reasonable limits
-        Debug.Log($"{gameObject.name} speed changed to: {speed:F1}");
+        // Debug.Log($"{gameObject.name} speed changed to: {speed:F1}");
     }
 }
