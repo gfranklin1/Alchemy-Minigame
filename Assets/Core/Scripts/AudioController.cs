@@ -9,9 +9,9 @@ public class AudioController : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.time = startTime;
         if (gameObject.name == "Background Music")
         {
-            audioSource.time = startTime;
             audioSource.Play();
         }
     }

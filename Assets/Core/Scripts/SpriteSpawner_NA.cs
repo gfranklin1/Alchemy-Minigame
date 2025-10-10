@@ -59,9 +59,15 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
     [Tooltip("Range of sorting order values (min to max)")]
     private int maxSortingOrder = 10;
 
+    [Header("UI")]
+    [SerializeField]
+    [Tooltip("UI Manager for displaying final score")]
+    private GameUIManager uiManager;
+
+
     [Header("Game Loop Settings")]
     [SerializeField]
-    [Tooltip("Time to wait before deleting the special sprite after being found")]
+    [Tooltip("Time to wait before deleting the special sprite after being found")]    
     private float luigiDeleteDelay = 1f;
 
     private int score = 0;
@@ -81,15 +87,61 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
 
     public void OnTimerEnd()
     {
-        StartCoroutine(PrintScore());
+        if (uiManager != null)
+        {
+            uiManager.ShowFinalScore(score);
+        }
+    
+        StartCoroutine(EndGame());
+        
+    }
+
+    private IEnumerator EndGame()
+    {
+        Debug.Log("Final Score: " + score);
+
+        DeleteAllSprites();
+
+        yield return new WaitForSeconds(uiManager.getDuration() + 3);
+
         MinigameManager.SetStateToSuccess();
         MinigameManager.EndGame();
     }
 
-    private IEnumerator PrintScore()
+    private void DeleteAllSprites()
     {
-        Debug.Log("Final Score: " + score);
-        yield return new WaitForSeconds(2);
+        GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        int deletedCount = 0;
+
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.name.Contains("(Clone)"))
+            {
+                bool isOurSprite = false;
+                
+                // check if it's a distraction sprite
+                foreach (GameObject distractionPrefab in distractionSprites)
+                {
+                    if (distractionPrefab != null && obj.name.StartsWith(distractionPrefab.name))
+                    {
+                        isOurSprite = true;
+                        break;
+                    }
+                }
+                
+                // check if it's the special sprite
+                if (!isOurSprite && specialSprite != null && obj.name.StartsWith(specialSprite.name))
+                {
+                    isOurSprite = true;
+                }
+                
+                if (isOurSprite)
+                {
+                    Destroy(obj);
+                    deletedCount++;
+                }
+            }
+        }
     }
 
     void Start()

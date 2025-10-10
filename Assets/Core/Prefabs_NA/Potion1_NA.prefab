@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteMovement_NA
   minSpeed: 5
-  maxSpeed: 10
+  maxSpeed: 8
 --- !u!50 &1455070887987207416
 Rigidbody2D:
   serializedVersion: 5
