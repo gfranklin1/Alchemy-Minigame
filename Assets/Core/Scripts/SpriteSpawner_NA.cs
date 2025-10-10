@@ -24,10 +24,6 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
     [Tooltip("Margin from screen edges (in world units)")]
     private float screenMargin = 1f;
 
-    [SerializeField]
-    [Tooltip("Total number of regular sprites to spawn (distributed among the 5 regular sprites)")]
-    private int totalCount = 10;
-
     [Header("Progressive Difficulty")]
     [SerializeField]
     [Tooltip("Score increase required to unlock next distraction sprite type")]
