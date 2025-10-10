@@ -31,8 +31,7 @@ public class GameUIManager : MonoBehaviour
             
             int totalSpritesSpawned = score * (5 + (score * 5)) / 2;
             string scoreText = $"<color=red>GAME OVER!</color>\n\n" +
-                            $"Final Score: {score}\n" +
-                            $"Luigi Found: {score} times\n" +
+                            $"Potion Found: {score} times\n" +
                             $"Total Sprites Spawned: {totalSpritesSpawned}";
             
             finalScoreText.text = scoreText;
