@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecf03a5dabc7a748aa864d871a86bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioController
-  startTime: 13
+  startTime: 0
 --- !u!82 &1283289960
 AudioSource:
   m_ObjectHideFlags: 0
@@ -976,7 +976,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: a536ed0ebfa279e4c809728a9ea7a441, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 0
   Mute: 0
