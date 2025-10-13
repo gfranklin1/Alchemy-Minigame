@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Clicker : MonoBehaviour
+public class Clicker_NA : MonoBehaviour
 {
     [SerializeField] GameObject luigi;
     [SerializeField] float ClickRadius = 0.4f;
@@ -42,7 +42,7 @@ public class Clicker : MonoBehaviour
         if (hitCollider == null) return;
         // Debug.Log("Hit collider: " + hitCollider.gameObject.name);
 
-        if (!MinigameManager.IsReady()) 
+        if (!MinigameManager_NA.IsReady()) 
         {
             Debug.Log("MinigameManager not ready");
             return;

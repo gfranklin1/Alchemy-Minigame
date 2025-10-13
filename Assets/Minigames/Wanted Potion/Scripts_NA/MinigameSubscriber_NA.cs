@@ -1,4 +1,4 @@
-public interface MinigameSubscriber
+public interface MinigameSubscriber_NA
 {
     /// <summary>
     /// Called after the initial countdown, when the minigame actually begins

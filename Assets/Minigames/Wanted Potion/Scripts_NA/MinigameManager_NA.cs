@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-public class MinigameManager : MonoBehaviour
+public class MinigameManager_NA : MonoBehaviour
 {
-    static MinigameManager singleton; void Awake() { singleton = this; }
+    static MinigameManager_NA singleton; void Awake() { singleton = this; }
     private enum MinigameState
     {
         READY,
@@ -15,13 +15,13 @@ public class MinigameManager : MonoBehaviour
     }
     private MinigameState mstate = MinigameState.READY;
 
-    private List<MinigameSubscriber> subscribers = new List<MinigameSubscriber>();
+    private List<MinigameSubscriber_NA> subscribers = new List<MinigameSubscriber_NA>();
 
     /// <summary>
     /// Subscribes a class of 'MinigameSubscriber' to this manager.
     /// </summary>
     /// <param name="subscriber"></param>
-    public static void Subscribe(MinigameSubscriber subscriber)
+    public static void Subscribe(MinigameSubscriber_NA subscriber)
     {
         singleton.subscribers.Add(subscriber);
     }
@@ -31,8 +31,8 @@ public class MinigameManager : MonoBehaviour
 
     void Start()
     {
-        CoreUI.Timer.maxValue = minigameLength;
-        CoreUI.Timer.value = minigameLength;
+        CoreUI_NA.Timer.maxValue = minigameLength;
+        CoreUI_NA.Timer.value = minigameLength;
 
         // Ready countdown:
         mstate = MinigameState.READY;
@@ -44,7 +44,7 @@ public class MinigameManager : MonoBehaviour
         Time.timeScale = 0f;
         for (int i = 3; i > 0; i--)
         {
-            CoreUI.CountdownText.text = i.ToString();
+            CoreUI_NA.CountdownText.text = i.ToString();
             yield return new WaitForSecondsRealtime(1);
         }
 
@@ -52,18 +52,18 @@ public class MinigameManager : MonoBehaviour
         GameObject.Find("CountdownScreen").SetActive(false);
         Time.timeScale = 1f;
         mstate = MinigameState.PLAYING;
-        CoreUI.CountdownText.gameObject.SetActive(false);
+        CoreUI_NA.CountdownText.gameObject.SetActive(false);
 
-        foreach (MinigameSubscriber s in subscribers)
+        foreach (MinigameSubscriber_NA s in subscribers)
             s.OnMinigameStart();
     }
 
     void Update()
     {
-        CoreUI.Timer.value -= Time.deltaTime;
-        if (CoreUI.Timer.value <= CoreUI.Timer.minValue)
+        CoreUI_NA.Timer.value -= Time.deltaTime;
+        if (CoreUI_NA.Timer.value <= CoreUI_NA.Timer.minValue)
         {
-            foreach (MinigameSubscriber s in subscribers)
+            foreach (MinigameSubscriber_NA s in subscribers)
                 s.OnTimerEnd();
         }
     }

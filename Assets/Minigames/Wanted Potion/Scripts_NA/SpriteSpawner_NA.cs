@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
+public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber_NA
 {
     [Header("Distraction Sprites")]
     [SerializeField]
@@ -16,7 +16,7 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
     [Header("Audio")]
     [SerializeField]
     [Tooltip("Audio controller for win sound effect")]
-    private AudioController winSFXController;
+    private AudioController_NA winSFXController;
 
 
     [Header("Spawn Settings")]
@@ -58,7 +58,7 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
     [Header("UI")]
     [SerializeField]
     [Tooltip("UI Manager for displaying final score")]
-    private GameUIManager uiManager;
+    private GameUIManager_NA uiManager;
 
 
     [Header("Game Loop Settings")]
@@ -100,8 +100,8 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
 
         yield return new WaitForSeconds(uiManager.getDuration() + 3);
 
-        MinigameManager.SetStateToSuccess();
-        MinigameManager.EndGame();
+        MinigameManager_NA.SetStateToSuccess();
+        MinigameManager_NA.EndGame();
     }
 
     private void DeleteAllSprites()
@@ -142,7 +142,7 @@ public class SpriteSpawner_NA : MonoBehaviour, MinigameSubscriber
 
     void Start()
     {
-        MinigameManager.Subscribe(this);
+        MinigameManager_NA.Subscribe(this);
 
         CalculateScreenBounds();
 
